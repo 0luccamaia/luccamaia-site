@@ -97,7 +97,7 @@
     formSubmit.disabled = true;
     formSubmitLabel.textContent = 'Enviando…';
     try {
-      const response = await fetch(`https://formsubmit.co/ajax/${contactEmail}`, {
+      const response = await fetch(form.action, {
         method: 'POST',
         headers: { Accept: 'application/json' },
         body: data,
