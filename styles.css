@@ -113,13 +113,18 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--orange); outlin
 .hero-photo {
   position: absolute;
   z-index: 2;
+  /* Figma: 69,06vw de largura; em janelas altas a foto cresce para cobrir a tela. */
+  --photo-w: max(69.06vw, 90vh);
   left: 38.75vw;
-  top: calc(50% - 48.25vw);
-  width: 69.06vw;
-  height: 92.5vw;
+  top: calc(50% - var(--photo-w) * .6987);
+  width: var(--photo-w);
+  height: calc(var(--photo-w) * 1.3394);
   mix-blend-mode: multiply;
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 16%);
-  mask-image: linear-gradient(to right, transparent, #000 16%);
+  /* Dissolve as bordas para o fundo da foto não formar uma faixa. */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 16%), linear-gradient(to bottom, transparent, #000 10%);
+  mask-image: linear-gradient(to right, transparent, #000 16%), linear-gradient(to bottom, transparent, #000 10%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
 }
 .hero-photo img { display: block; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
 .hero-word { display: none; }
