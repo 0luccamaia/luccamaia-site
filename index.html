@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lucca Maia</title>
+  <meta name="description" content="Lucca Maia, designer e estrategista de marcas. Pensar. Expressar. Sustentar. Um manifesto sobre construir marcas.">
+  <link rel="icon" href="assets/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Agdasima:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    // O menu do celular depende de script; as animações, também de não haver movimento reduzido.
+    document.documentElement.classList.add('has-menu');
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('js');
+    }
+  </script>
+</head>
+<body>
+  <div class="intro" aria-hidden="true"><img src="assets/logo-mark.svg" alt="" width="30" height="34"></div>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Lucca Maia, início">
+      <img class="brand-mark" src="assets/logo-mark.svg" alt="" width="30" height="34">
+      <img class="brand-name" src="assets/lucca-maia.svg" alt="" width="60" height="29">
+    </a>
+    <nav aria-label="Principal">
+      <a href="#porque">Porque</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#processo">Processo</a>
+      <a href="#projetos">Projetos</a>
+      <a href="#contato">Eu quero</a>
+    </nav>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">
+      <span class="menu-btn-label">Menu</span>
+      <span class="menu-btn-icon" aria-hidden="true"><i></i><i></i></span>
+    </button>
+  </header>
+
+  <div id="menu" class="menu" inert>
+    <nav aria-label="Menu">
+      <a href="#porque"><span class="line"><span><small>01</small>Porque</span></span></a>
+      <a href="#sobre"><span class="line"><span><small>02</small>Sobre</span></span></a>
+      <a href="#processo"><span class="line"><span><small>03</small>Processo</span></span></a>
+      <a href="#projetos"><span class="line"><span><small>04</small>Projetos</span></span></a>
+      <a href="#contato"><span class="line"><span><small>05</small>Eu quero</span></span></a>
+    </nav>
+    <p class="menu-note">Pensar. Expressar. Sustentar.</p>
+  </div>
+
+  <main>
+    <section id="top" class="hero-track" data-tone="light">
+      <div class="hero">
+        <div class="hero-word" aria-hidden="true">Branding</div>
+        <div class="hero-photo">
+          <img src="assets/lucca.jpg" alt="Lucca Maia de perfil, de boné, olhando para cima" width="884" height="1184">
+        </div>
+        <div class="hero-copy">
+          <h1 class="hero-title">
+            <span class="line"><span>Venda sem oferta.</span></span>
+            <span class="line"><span>Marca é</span></span>
+            <span class="line"><span>diferenciação.</span></span>
+          </h1>
+          <p class="hero-tag"><strong>Pensar. Expressar. Sustentar.</strong><br>Um manifesto sobre construir marcas.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="porque" class="manifesto-track">
+      <div class="manifesto" data-tone="light">
+        <h2 class="eyebrow">Porque</h2>
+        <div class="chapters">
+          <p class="chapter" data-tone="light">Escrevo para os <em>aventureiros</em>. Amantes da vitória.</p>
+          <p class="chapter" data-tone="light">Aqueles que não ficam parados quando o assunto é superar os desafios.</p>
+          <p class="chapter" data-tone="light">Escrevo para aqueles que nunca desistem, mas sempre persistem em transformar sua realidade.</p>
+          <p class="chapter" data-tone="dark">Aqueles cujas ideias geram desconforto nos acomodados, dúvida nos indecisos e causam <em>movimento</em> no meio da sociedade.</p>
+          <p class="chapter" data-tone="orange">Aqueles que dão o melhor de si para tornar a teoria em prática, e sabem que o futuro está sendo construído hoje.</p>
+        </div>
+        <div class="chapter-count" aria-hidden="true"><span class="chapter-now">01</span> / 05</div>
+      </div>
+    </section>
+
+    <section id="sobre" class="bio" data-tone="light">
+      <h2 class="eyebrow">Sobre</h2>
+      <div class="bio-grid">
+        <div class="bio-photo">
+          <img src="assets/lucca.jpg" alt="" width="884" height="1184" loading="lazy">
+        </div>
+        <div>
+          <p class="bio-name">Lucca Maia</p>
+          <p class="bio-role">Designer e estrategista de marcas</p>
+          <dl class="stats">
+            <div class="stat"><dt>Anos como designer</dt><dd data-count="7">7</dd></div>
+            <div class="stat"><dt>Anos como estrategista de marcas</dt><dd data-count="2" data-suffix="+">2+</dd></div>
+            <div class="stat"><dt>Projetos</dt><dd data-count="20" data-suffix="+">20+</dd></div>
+            <div class="stat"><dt>Países</dt><dd data-count="2">2</dd></div>
+            <div class="stat"><dt>Estados do Brasil</dt><dd data-count="5">5</dd></div>
+            <div class="stat"><dt>Certificado pelo</dt><dd>MEC</dd></div>
+          </dl>
+        </div>
+      </div>
+      <p class="statement reveal-words">Unir estratégia com sensibilidade humana é meu dever. Não é só sobre vender mais. É sobre fazer o meu cliente <em>voltar a acreditar no próprio valor.</em></p>
+    </section>
+
+    <section class="study-track" data-tone="dark" aria-label="Estudo sobre marcas">
+      <div class="study">
+        <p class="eyebrow">Estudo sobre marcas</p>
+        <p class="study-words"><span>Pensar.</span><span>Expressar.</span><span>Sustentar.</span></p>
+        <div class="study-foot">
+          <p>Um manifesto sobre construir marcas.</p>
+          <dl>
+            <div><dt>Tema central</dt><dd>Branding</dd></div>
+            <div><dt>Caminho</dt><dd>Estratégia → Cultura</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section id="processo" class="process" data-tone="light">
+      <h2 class="eyebrow">Processo</h2>
+      <p class="process-intro">Quatro etapas para tornar a teoria em prática.</p>
+      <div class="steps">
+        <article class="step" data-tone="light">
+          <header><span class="step-num">01</span><h3>Posicionamento</h3></header>
+          <div class="step-cols">
+            <div>
+              <h4>Entregas</h4>
+              <ul>
+                <li>Diagnóstico da marca e do mercado</li>
+                <li>Definição do posicionamento</li>
+                <li>Narrativa e mensagem central</li>
+              </ul>
+            </div>
+            <div>
+              <h4>O que você ganha</h4>
+              <p>Clareza sobre quem a sua empresa é e por que ela merece ser escolhida.</p>
+            </div>
+          </div>
+        </article>
+        <article class="step is-dark" data-tone="dark">
+          <header><span class="step-num">02</span><h3>Tribo</h3></header>
+          <div class="step-cols">
+            <div>
+              <h4>Entregas</h4>
+              <ul>
+                <li>Definição do público ideal</li>
+                <li>Mapa de crenças e motivações</li>
+                <li>Linguagem e tom da marca</li>
+              </ul>
+            </div>
+            <div>
+              <h4>O que você ganha</h4>
+              <p>Pessoas que se identificam com a sua ideia, e não apenas com o seu preço.</p>
+            </div>
+          </div>
+        </article>
+        <article class="step is-orange" data-tone="orange">
+          <header><span class="step-num">03</span><h3>Estratégia</h3></header>
+          <div class="step-cols">
+            <div>
+              <h4>Entregas</h4>
+              <ul>
+                <li>Plano de ação com prioridades</li>
+                <li>Canais e calendário</li>
+                <li>Indicadores de acompanhamento</li>
+              </ul>
+            </div>
+            <div>
+              <h4>O que você ganha</h4>
+              <p>Um caminho claro para o seu negócio, com cada passo feito por um motivo.</p>
+            </div>
+          </div>
+        </article>
+        <article class="step is-paper" data-tone="light">
+          <header><span class="step-num">04</span><h3>Valor</h3></header>
+          <div class="step-cols">
+            <div>
+              <h4>Entregas</h4>
+              <ul>
+                <li>Arquitetura da oferta</li>
+                <li>Argumentos e provas de valor</li>
+                <li>Identidade visual e peças da marca</li>
+              </ul>
+            </div>
+            <div>
+              <h4>O que você ganha</h4>
+              <p>Uma marca que comunica o que vale, e um cliente que entende por que investir nela.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="projetos" class="projects-track" data-tone="dark">
+      <div class="projects">
+        <h2 class="projects-title">Projetos</h2>
+        <div class="rail">
+          <article class="card">
+            <div class="art"><img src="assets/projetos/digno-1.jpg" alt="Pôster vermelho e branco com a palavra Digno em um ambiente de madeira" loading="lazy"></div>
+            <span class="tag">Streetwear</span>
+            <div class="card-body">
+              <span class="num">01</span>
+              <h3>Digno</h3>
+              <p>Do Ceará para o mundo: streetwear autoral voltado para o público cristão.</p>
+            </div>
+            <button class="card-open" type="button" data-project="digno" aria-label="Ver o projeto Digno"><span>Ver projeto</span></button>
+          </article>
+          <article class="card">
+            <div class="art"><img src="assets/projetos/logos-5.jpg" alt="Outdoor preto com a frase O próximo passo que define o jogo" loading="lazy"></div>
+            <span class="tag">Agência de marketing</span>
+            <div class="card-body">
+              <span class="num">02</span>
+              <h3>Lógos</h3>
+              <p>Revelar e potencializar aquilo que já existe no negócio.</p>
+            </div>
+            <button class="card-open" type="button" data-project="logos" aria-label="Ver o projeto Lógos"><span>Ver projeto</span></button>
+          </article>
+          <article class="card">
+            <div class="art"><img src="assets/projetos/praca-1.jpg" alt="Painel roxo da Praça com foto de amigos em uma área externa" loading="lazy"></div>
+            <span class="tag">Açaiteria</span>
+            <div class="card-body">
+              <span class="num">03</span>
+              <h3>Praça</h3>
+              <p>Mais que açaí. Um ponto de encontro.</p>
+            </div>
+            <button class="card-open" type="button" data-project="praca" aria-label="Ver o projeto Praça"><span>Ver projeto</span></button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <div class="marquee" data-tone="orange" aria-hidden="true">
+      <div class="marquee-row">
+        <span>O futuro está sendo construído hoje</span><img src="assets/logo-mark.svg" alt="" width="30" height="34">
+        <span>O futuro está sendo construído hoje</span><img src="assets/logo-mark.svg" alt="" width="30" height="34">
+        <span>O futuro está sendo construído hoje</span><img src="assets/logo-mark.svg" alt="" width="30" height="34">
+        <span>O futuro está sendo construído hoje</span><img src="assets/logo-mark.svg" alt="" width="30" height="34">
+      </div>
+    </div>
+
+    <section class="belief" data-tone="light" aria-label="No que acredito">
+      <p class="statement reveal-words">Acreditar nessa ideia e converter o improvável na referência é o que me motiva.</p>
+      <div class="flow" aria-hidden="true">
+        <span class="flow-item is-soft">Improvável</span>
+        <span class="flow-item is-dark">
+          <svg viewBox="0 0 64 24" width="64" height="24" fill="none" stroke="currentColor" stroke-width="3"><path d="M0 12h61M50 2l11 10-11 10"/></svg>
+        </span>
+        <span class="flow-item is-orange">Referência</span>
+      </div>
+      <p class="belief-big"><span class="line"><span>Não simplesmente acreditar,</span></span><span class="line"><span>mas investir.</span></span></p>
+      <p class="statement reveal-words">Pois acredito que o futuro é feito de investimentos, e este é feito por todos aqueles que acreditam nessa verdade.</p>
+    </section>
+
+    <section id="eu-quero" class="want-track">
+      <div class="want" data-tone="orange">
+        <div class="want-fill"></div>
+        <div class="want-content">
+          <h2><span class="line"><span>Eu quero</span></span></h2>
+          <p>Vamos construir o futuro da sua marca hoje.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contato" class="contact" data-tone="orange">
+      <div class="contact-intro">
+        <h2>Conte sobre a sua marca</h2>
+        <p>Preencha o formulário e eu retorno para conversarmos sobre o próximo passo.</p>
+        <ul class="contact-links">
+          <li><a href="https://www.instagram.com/eu.luccamaia/" target="_blank" rel="noopener">@eu.luccamaia</a></li>
+          <li><a href="mailto:studioluccamaia@gmail.com">studioluccamaia@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="form-card">
+        <form class="lead-form" action="https://formsubmit.co/studioluccamaia@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="Novo contato pelo site luccamaia.com">
+          <input type="hidden" name="_template" value="table">
+          <input class="form-trap" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <div class="field">
+            <label for="f-nome">Seu nome <span aria-hidden="true">*</span></label>
+            <input id="f-nome" name="Nome" type="text" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="f-empresa">Empresa ou marca</label>
+            <input id="f-empresa" name="Empresa" type="text" autocomplete="organization">
+          </div>
+          <div class="field">
+            <label for="f-email">E-mail <span aria-hidden="true">*</span></label>
+            <input id="f-email" name="E-mail" type="email" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="f-whatsapp">WhatsApp</label>
+            <input id="f-whatsapp" name="WhatsApp" type="tel" autocomplete="tel" inputmode="tel">
+          </div>
+          <div class="field field-full">
+            <label for="f-link">Instagram ou site da marca</label>
+            <input id="f-link" name="Instagram ou site" type="text" autocapitalize="none">
+          </div>
+
+          <fieldset class="field field-full">
+            <legend>Onde a sua marca mais precisa de movimento?</legend>
+            <div class="chips">
+              <label class="chip"><input type="checkbox" name="Interesse[]" value="Posicionamento"><span>Posicionamento</span></label>
+              <label class="chip"><input type="checkbox" name="Interesse[]" value="Tribo"><span>Tribo</span></label>
+              <label class="chip"><input type="checkbox" name="Interesse[]" value="Estratégia"><span>Estratégia</span></label>
+              <label class="chip"><input type="checkbox" name="Interesse[]" value="Valor"><span>Valor</span></label>
+            </div>
+          </fieldset>
+
+          <div class="field field-full">
+            <label for="f-mensagem">Qual é o maior desafio da sua marca hoje? <span aria-hidden="true">*</span></label>
+            <textarea id="f-mensagem" name="Mensagem" rows="4" required></textarea>
+          </div>
+
+          <div class="form-foot field-full">
+            <p class="form-note">Seus dados são enviados por e-mail e usados apenas para responder ao seu contato.</p>
+            <button class="form-submit" type="submit">
+              <span class="form-submit-label">Enviar</span>
+              <svg viewBox="0 0 64 24" width="32" height="12" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M0 12h61M50 2l11 10-11 10"/></svg>
+            </button>
+          </div>
+          <p class="form-status field-full" role="status" aria-live="polite" hidden></p>
+        </form>
+
+        <div class="form-done" tabindex="-1" hidden>
+          <h3>Recebido.</h3>
+          <p>Obrigado por compartilhar a sua ideia. Em breve eu retorno para conversarmos.</p>
+        </div>
+      </div>
+
+      <footer>© 2026 Lucca Maia</footer>
+    </section>
+  </main>
+
+  <dialog id="projeto-digno" class="project" aria-labelledby="projeto-digno-titulo">
+    <button class="project-close" type="button">Fechar</button>
+    <header class="project-head">
+      <p class="project-meta"><span>01</span> Streetwear · 2026</p>
+      <h2 id="projeto-digno-titulo">Digno</h2>
+    </header>
+    <div class="project-intro">
+      <p class="project-lead">Digno é uma marca de streetwear autoral, desenvolvida à mão — do Ceará para o mundo — e voltada para o público cristão.</p>
+      <p>Digno é a prova de que sonhar é o primeiro passo pra transformar o mundo. Nossa missão, como sonhadores, é criar através de nossas roupas uma comunidade de pessoas que acreditam, e fazem o possível e o impossível para tornar seus sonhos realidade.</p>
+    </div>
+    <div class="project-gallery">
+        <figure class="is-wide"><img src="assets/projetos/digno-1.jpg" alt="Pôster vermelho e branco com a palavra Digno em um ambiente de madeira" loading="lazy"></figure>
+        <figure class=""><img src="assets/projetos/digno-2.jpg" alt="Outdoor com a palavra Street em uma parede de tijolos" loading="lazy"></figure>
+        <figure class=""><img src="assets/projetos/digno-3.jpg" alt="Balcão de loja com a marca Digno aplicada" loading="lazy"></figure>
+        <figure class="is-wide"><img src="assets/projetos/digno-5.jpg" alt="Pessoa de costas usando camiseta branca com estampa de coroa vermelha" loading="lazy"></figure>
+        <figure class=""><img src="assets/projetos/digno-4.jpg" alt="Banners da Digno pendurados entre colunas" loading="lazy"></figure>
+        <figure class=""><img src="assets/projetos/digno-6.jpg" alt="Notebook com a loja virtual da Digno sobre uma poltrona de couro" loading="lazy"></figure>
+    </div>
+    <blockquote class="project-quote">Você não foi feito pra sobreviver. Você foi feito pra viver com honra.</blockquote>
+    <div class="project-chips">
+      <h3>Frases da marca</h3>
+      <ul><li>Worthy of praise</li><li>Move different</li><li>From Ceará to the world</li></ul>
+    </div>
+    <blockquote class="project-quote is-small">Mudar o mundo talvez seja impossível — mas mudar o próprio mundo não.</blockquote>
+    <button class="project-next" type="button" data-project="logos"><small>Próximo projeto</small>Lógos</button>
+  </dialog>
+
+  <dialog id="projeto-logos" class="project" aria-labelledby="projeto-logos-titulo">
+    <button class="project-close" type="button">Fechar</button>
+    <header class="project-head">
+      <p class="project-meta"><span>02</span> Agência de marketing · 2026</p>
+      <h2 id="projeto-logos-titulo">Lógos</h2>
+    </header>
+    <div class="project-intro">
+      <p class="project-lead">Lógos existe para ajudar empresas a enxergarem, organizarem e comunicarem o valor que já possuem, transformando esse potencial em uma percepção mais forte diante do mercado.</p>
+      <p>Toda empresa tem algo de valioso para comunicar, mas muitas não conseguem enxergar, organizar ou transmitir esse valor. Quando estratégia, imagem e experiência passam a comunicar a mesma coisa, o negócio deixa de apenas existir no mercado e passa a ser percebido.</p>
+    </div>
+    <div class="project-gallery">
+        <figure class="is-wide"><img src="assets/projetos/logos-5.jpg" alt="Outdoor preto com a frase O próximo passo que define o jogo" loading="lazy"></figure>
+        <figure class=""><img src="assets/projetos/logos-1.jpg" alt="Símbolo da Lógos em vidro, um cavalo de xadrez com coroa" loading="lazy"></figure>
+        <figure class=""><img src="assets/projetos/logos-2.jpg" alt="Celular com o símbolo da Lógos na capa, sobre fundo verde" loading="lazy"></figure>
+        <figure class="is-wide"><img src="assets/projetos/logos-3.jpg" alt="Boné preto com o símbolo da Lógos" loading="lazy"></figure>
+        <figure class=""><img src="assets/projetos/logos-4.jpg" alt="Pessoa usando camiseta verde com o símbolo da Lógos" loading="lazy"></figure>
+        <figure class=""><img src="assets/projetos/logos-6.jpg" alt="Painel vertical da Lógos no alto de um prédio" loading="lazy"></figure>
+    </div>
+    <blockquote class="project-quote">Tudo comunica.</blockquote>
+    <div class="project-chips">
+      <h3>Valores</h3>
+      <ul><li>Autenticidade</li><li>Presença sólida</li><li>Clareza do próprio valor</li><li>Segurança na execução</li><li>Visão estratégica</li></ul>
+    </div>
+    <blockquote class="project-quote is-small">Uma solução que eleva o ordinário ao extraordinário.</blockquote>
+    <button class="project-next" type="button" data-project="praca"><small>Próximo projeto</small>Praça</button>
+  </dialog>
+
+  <dialog id="projeto-praca" class="project" aria-labelledby="projeto-praca-titulo">
+    <button class="project-close" type="button">Fechar</button>
+    <header class="project-head">
+      <p class="project-meta"><span>03</span> Açaiteria · 2025</p>
+      <h2 id="projeto-praca-titulo">Praça</h2>
+    </header>
+    <div class="project-intro">
+      <p class="project-lead">Mais que açaí. Um ponto de encontro. Um lugar onde você pode estar com seus amigos.</p>
+      <p>Um ambiente feito para boas conversas, onde o açaí acompanha grandes histórias. O açaí a gente faz. As histórias vocês criam.</p>
+    </div>
+    <div class="project-gallery">
+        <figure class="is-wide"><img src="assets/projetos/praca-1.jpg" alt="Painel roxo da Praça com foto de amigos em uma área externa" loading="lazy"></figure>
+        <figure class=""><img src="assets/projetos/praca-2.jpg" alt="Embalagens roxas e amarelas com a marca Praça" loading="lazy"></figure>
+        <figure class=""><img src="assets/projetos/praca-3.jpg" alt="Bandeira e ponto de ônibus com a identidade da Praça" loading="lazy"></figure>
+        <figure class="is-wide"><img src="assets/projetos/praca-5.jpg" alt="Pessoa segurando uma embalagem azul e roxa da Praça" loading="lazy"></figure>
+        <figure class=""><img src="assets/projetos/praca-4.jpg" alt="Copo de açaí verde com a marca Praça" loading="lazy"></figure>
+        <figure class=""><img src="assets/projetos/praca-6.jpg" alt="Mão segurando um boné roxo com o logo da Praça" loading="lazy"></figure>
+    </div>
+    <blockquote class="project-quote">Melhor que açaí, são os amigos que fazemos pelo caminho.</blockquote>
+    <div class="project-chips">
+      <h3>Frases da marca</h3>
+      <ul><li>Amigo de praça é parça</li><li>Açaí pós-culto? Sim ou claro?</li><li>Junta os amigos e vem</li></ul>
+    </div>
+    <blockquote class="project-quote is-small">Onde o simples vira memória.</blockquote>
+    <button class="project-next" type="button" data-project="digno"><small>Próximo projeto</small>Digno</button>
+  </dialog>
+
+  <button class="scroll-btn" type="button" aria-label="Ir para a próxima seção">
+    <img class="scroll-btn-bg" src="assets/ellipse.svg" alt="">
+    <svg class="scroll-btn-ring" viewBox="0 0 74 74" aria-hidden="true"><circle cx="37" cy="37" r="35" pathLength="1"/></svg>
+    <img class="scroll-btn-arrow" src="assets/arrow.svg" alt="">
+  </button>
+
+  <div class="cursor" aria-hidden="true"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/motion@12.23.0/dist/motion.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
