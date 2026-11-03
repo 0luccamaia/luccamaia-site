@@ -787,14 +787,15 @@ html:has(dialog[open]) { overflow: hidden; }
   html.menu-open, html.menu-open body { overflow: hidden; }
   .menu-open .scroll-btn { visibility: hidden; }
 
-  .hero-copy { left: var(--gutter); top: 12%; }
+  .hero-copy { left: var(--gutter); top: 88px; }
   .hero-title { font-size: 12.6vw; }
   .hero-tag { margin-top: 12px; }
   .study-words { font-size: min(23vw, 22vh); }
   .study-words span:nth-child(2) { margin-left: 0; }
   .study-words span:nth-child(3) { margin-left: 0; }
   .study-foot dl { margin-right: 0; }
-  .hero-photo { left: -28vw; top: auto; bottom: -15vh; width: 170vw; height: 227.7vw; }
+  /* O boné fica a 34% da largura da foto: ela começa logo abaixo do texto, em qualquer altura de tela. */
+  .hero-photo { --photo-w: 170vw; left: -28vw; top: calc(154px + 33vw - var(--photo-w) * .34); width: var(--photo-w); height: calc(var(--photo-w) * 1.3394); }
   .js .hero-word { font-size: 37vw; }
 
   .bio-grid { grid-template-columns: minmax(0, 1fr); }
