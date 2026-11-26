@@ -6,6 +6,7 @@ Site pessoal de Lucca Maia (branding): HTML, CSS e JS estáticos, sem build. Ani
 Páginas: `index.html` (site) e `briefing.html` (pré-briefing, uma pergunta por tela, script `briefing.js`).
 
 ## Publicar
+- Antes de publicar qualquer mudança, mande prévias (capturas de computador e celular) e espere o "pode publicar" do Lucca.
 - Repositório `0luccamaia/luccamaia-site`, branch `main`, raiz. GitHub Pages publica cada push em 1 a 2 minutos.
 - Ao mudar `main.js`, `briefing.js` ou `styles.css`, aumente o `?v=` correspondente nos HTML, senão os visitantes recebem a versão antiga em cache.
 - Não apague `CNAME` nem `.nojekyll`. HTTPS está ativo e forçado.
@@ -18,8 +19,9 @@ Páginas: `index.html` (site) e `briefing.html` (pré-briefing, uma pergunta por
 
 ## Visual
 - Minimalista: paleta azul (`--azure #00638e`, `--mist #8cb9cc`, `--azure-light #bfd8e3`), grafite e branco; Inter Tight fina, Instrument Serif itálico nos `<em>`, JetBrains Mono nas etiquetas.
-- Paisagens são cordilheiras em SVG, geradas por `node tools/gen-land.js .` (preenche cada `<path data-ridge="nome">` dos HTML e gera `assets/land-*.svg`). Não edite os caminhos à mão.
-- O céu do "Porque" muda a cada capítulo pelas paletas em `main.js` (`palettes`).
+- Capa e "Porque" são gradientes, sem listras nem desenhos. O gradiente do "Porque" muda a cada capítulo pelas paletas em `main.js` (`palettes`).
+- Fotos de paisagem ficam em `assets/paisagens/` (2000 px, JPG ~80%): `dunas.jpg` no estudo; no processo, uma por etapa (`dunas-escuras`, `caminho`, `montanha`, `passaros`); `dunas-escuras` também no pré-briefing. Não use fotos pequenas em tela cheia.
+- Capas dos cases: `digno-1`, `logos-1` e `praca-2` (as fotos dos projetos são horizontais; o cartão é 4:5).
 - A única foto do Lucca no site é a do Sobre (`assets/lucca-sobre.webp`). A capa não tem foto.
 
 ## Conteúdo

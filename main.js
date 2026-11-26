@@ -194,7 +194,7 @@
     return $$('.w', el);
   }
 
-  // Mouse suavizado, compartilhado pelas paisagens.
+  // Mouse suavizado, compartilhado pelas luzes.
   let px = 0, py = 0, cx = 0, cy = 0;
   if (hasPointer) {
     addEventListener('pointermove', (e) => {
@@ -205,7 +205,6 @@
 
   /* Entrada */
   const intro = $('.intro');
-  const heroRidges = $$('.land-hero .ridge');
   async function playIntro() {
     await animate($('img', intro), { scale: [0.4, 1], opacity: [0, 1] }, { duration: 0.6, ease }).finished;
     animate($('img', intro), { rotate: '180deg' }, { duration: 0.6, ease });
@@ -213,68 +212,60 @@
     intro.remove();
   }
   playIntro();
-  animate(heroRidges, { y: ['40%', '0%'] }, { duration: 2.2, ease, delay: stagger(0.09, { startDelay: 0.75 }) });
-  animate('.sun', { opacity: [0, 1], scale: [0.6, 1] }, { duration: 2.4, ease, delay: 0.9 });
-  animate('.land-hero .fog', { opacity: [0, 1] }, { duration: 2.5, delay: 1.2 });
-  animate('.hero-title .line > span', { y: ['110%', '0%'] }, { duration: 1.2, ease, delay: stagger(0.12, { startDelay: 1.1 }) });
-  animate('.hero-tag', { opacity: [0, 1], y: [12, 0] }, { duration: 0.9, ease, delay: 1.0 });
-  animate('.hero-sub', { opacity: [0, 1], y: [12, 0] }, { duration: 0.9, ease, delay: 1.45 });
-  animate('.hero-meta', { opacity: [0, 1] }, { duration: 1.2, delay: 1.7 });
+  animate('.hero-grad', { opacity: [0, 1], scaleY: [1.25, 1] }, { duration: 2.4, ease, delay: 0.6 });
+  animate('.hero-dot', { opacity: [0, 1], scale: [0, 1] }, { duration: 0.8, ease, delay: 1.0 });
+  animate('.hero-tag', { opacity: [0, 1], y: [12, 0] }, { duration: 0.9, ease, delay: 1.1 });
+  animate('.hero-title .line > span', { y: ['110%', '0%'] }, { duration: 1.2, ease, delay: stagger(0.12, { startDelay: 1.2 }) });
+  animate('.hero-sub', { opacity: [0, 1], y: [12, 0] }, { duration: 0.9, ease, delay: 1.55 });
+  animate('.hero-cta', { opacity: [0, 1], y: [12, 0] }, { duration: 0.9, ease, delay: 1.7 });
+  animate('.hero-meta', { opacity: [0, 1] }, { duration: 1.2, delay: 1.8 });
   animate('.site-header', { opacity: [0, 1], y: [-12, 0] }, { duration: 0.8, delay: 1.3 });
   animate('.scroll-btn', { opacity: [0, 1], scale: [0.5, 1] }, { type: 'spring', stiffness: 220, damping: 16, delay: 1.6 });
 
-  /* Capa: a moldura se abre, as montanhas ganham profundidade e a palavra sobe atrás delas */
+  /* Capa: a moldura se abre e o escuro sobe até tomar a tela */
   const heroTrack = $('.hero-track');
   const heroFrame = $('.hero-frame');
+  const heroGlow = $('.hero-glow');
   const frameInset = isDesktop() ? 'inset(10px round 28px)' : 'inset(8px round 20px)';
   scrub(heroFrame, { clipPath: [frameInset, 'inset(0px round 0px)'] }, heroTrack, ['start start', '45% end']);
-  scrub('.hero-word', { y: ['100%', '-12%'] }, heroTrack, ['start start', 'end end']);
-  scrub('.hero-copy', { y: ['0vh', '-16vh'], opacity: [1, 0] }, heroTrack, ['start start', '50% end']);
+  scrub('.hero-grad', { y: ['0%', '-27%'] }, heroTrack, ['start start', 'end end']);
+  scrub(heroGlow, { opacity: [1, 0.15] }, heroTrack, ['start start', 'end end']);
+  // O texto sobe com a rolagem e só some no fim da capa.
+  const heroCopy = $('.hero-copy');
+  scrub(heroCopy, { y: ['0vh', '-12vh'] }, heroTrack, ['start start', 'end end']);
+  scroll((p) => { heroCopy.style.opacity = 1 - clamp01((p - 0.6) / 0.3); }, { target: heroTrack, offset: ['start start', 'end end'] });
   scrub('.hero-meta', { opacity: [1, 0] }, heroTrack, ['start start', '30% end']);
 
-  // Paralaxe por profundidade: rolagem e mouse somados sem um sobrescrever o outro.
-  function parallax(layers, progress, scrollDepth, mouseDepth) {
-    layers.forEach((layer) => {
-      const d = Number(layer.dataset.depth);
-      layer.style.translate = `${cx * d * -mouseDepth}vw ${-progress * d * scrollDepth + cy * d * -mouseDepth * 0.5}vh`;
-    });
-  }
+  // Só anima o que está na tela.
   const watched = new Map();
   const io = new IntersectionObserver((entries) => {
     entries.forEach((en) => watched.set(en.target, en.isIntersecting));
   });
-
-  let heroProgress = 0;
-  scroll((p) => { heroProgress = p; }, { target: heroTrack, offset: ['start start', 'end end'] });
-  const sun = $('.sun');
   io.observe(heroTrack);
 
-  /* Porque: um capítulo de cada vez, com o céu mudando junto */
+  /* Porque: um capítulo de cada vez, com o gradiente mudando junto */
   const manifesto = $('.manifesto');
   const manifestoTrack = $('.manifesto-track');
-  const skyRidges = $$('.land-sky .ridge');
   const chapters = $$('.chapter');
   const chapterWords = chapters.map(splitWords);
   const chapterNow = $('.chapter-now');
   const fade = 0.12;
-  // Céu (três tons) e quatro cordilheiras para cada capítulo: manhã, dia, entardecer, noite e o gradiente da marca.
-  // A névoa clara só faz sentido nos céus claros.
-  const fogs = [1, 1, 0.35, 0.12, 0.3];
+  // Para cada capítulo: três tons de cima para baixo, a cor da luz e onde ela fica (x e y em %).
   const palettes = [
-    ['#eef3f5', '#dbe7ed', '#c4d8e1', '#b9cfd9', '#94b3c2', '#6890a4', '#2c566b'],
-    ['#e3edf2', '#eef3f5', '#f7f9fa', '#c9d8df', '#a5bfcb', '#7c9fb0', '#41687b'],
-    ['#0b3347', '#1f5d78', '#5f97ae', '#2b6680', '#1a4c63', '#0f3547', '#06202c'],
-    ['#040607', '#0b1419', '#16252d', '#1a2930', '#121d23', '#0b1318', '#05090c'],
-    ['#000000', '#004a6b', '#8cb9cc', '#00638e', '#004a6b', '#002c40', '#000000'],
-  ].map((pal) => pal.map((hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16))));
-  const skyVars = ['--s1', '--s2', '--s3', '--r1', '--r2', '--r3', '--r4'];
-  const mix = (a, b, t) => `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(' ')})`;
+    ['#04080f', '#0b3a73', '#a9c9d2', '#dfe7e6', 12, 108],
+    ['#070b12', '#102a45', '#2f6489', '#eef2f6', 96, 78],
+    ['#111214', '#121417', '#0c2c52', '#7ef4ff', 40, 118],
+    ['#020509', '#06172a', '#0b3a63', '#3d8fe0', 78, 104],
+    ['#000000', '#004a6b', '#8cb9cc', '#ffffff', 50, 125],
+  ];
+  const rgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  const mix = (a, b, t) => `rgb(${rgb(a).map((v, i) => Math.round(v + (rgb(b)[i] - v) * t)).join(' ')})`;
+  const lerp = (a, b, t) => a + (b - a) * t;
   const smoothstep = (t) => t * t * (3 - 2 * t);
-  let manifestoProgress = 0;
+  let glowX = palettes[0][4], glowY = palettes[0][5];
   io.observe(manifestoTrack);
 
   scroll((p) => {
-    manifestoProgress = p;
     const position = p * chapters.length;
     const current = Math.min(chapters.length - 1, Math.floor(position));
     chapters.forEach((chapter, i) => {
@@ -287,36 +278,31 @@
       chapter.style.transform = `translateY(${(1 - enter) * 40 - leave * 40}px)`;
       const words = chapterWords[i];
       const lit = (local / 0.72) * (words.length + 2);
-      words.forEach((w, j) => { w.style.opacity = 0.18 + clamp01(lit - j) * 0.82; });
+      words.forEach((w, j) => { w.style.opacity = 0.2 + clamp01(lit - j) * 0.8; });
     });
 
-    // O céu passa para o próximo capítulo no último quinto de cada um.
-    const frac = position - current;
+    // O gradiente passa para o do próximo capítulo no último terço de cada um.
     const next = Math.min(palettes.length - 1, current + 1);
-    const t = smoothstep(clamp01((frac - 0.8) / 0.2));
-    skyVars.forEach((name, i) => manifesto.style.setProperty(name, mix(palettes[current][i], palettes[next][i], t)));
-    manifesto.style.setProperty('--fog', fogs[current] + (fogs[next] - fogs[current]) * t);
+    const t = smoothstep(clamp01((position - current - 0.66) / 0.34));
+    const a = palettes[current], b = palettes[next];
+    ['--g1', '--g2', '--g3', '--gl'].forEach((name, i) => manifesto.style.setProperty(name, mix(a[i], b[i], t)));
+    glowX = lerp(a[4], b[4], t);
+    glowY = lerp(a[5], b[5], t);
 
-    manifesto.dataset.tone = chapters[current].dataset.tone;
     updateHeaderTone();
     chapterNow.textContent = String(current + 1).padStart(2, '0');
   }, { target: manifestoTrack, offset: ['start start', 'end end'] });
 
-  /* Estudo: as dunas andam devagar */
-  const studyTrack = $('.study-track');
-  const duneLayers = $$('.land-dunes .ridge');
-  let studyProgress = 0;
-  io.observe(studyTrack);
-
-  (function tick() {
+  // Luzes que respiram devagar e seguem um pouco o mouse.
+  (function tick(time = 0) {
     cx += (px - cx) * 0.06;
     cy += (py - cy) * 0.06;
-    if (watched.get(heroTrack)) {
-      parallax(heroRidges, heroProgress, 1.8, 0.5);
-      sun.style.translate = `calc(-50% + ${cx * -0.6}vw) calc(40% + ${heroProgress * 14}vh)`;
+    if (watched.get(heroTrack)) heroGlow.style.translate = `calc(-50% + ${cx * 8}vw) ${cy * 4}vh`;
+    if (watched.get(manifestoTrack)) {
+      const s = time / 1000;
+      manifesto.style.setProperty('--gx', `${glowX + Math.sin(s * 0.35) * 4 + cx * 6}%`);
+      manifesto.style.setProperty('--gy', `${glowY + Math.cos(s * 0.28) * 3 + cy * 4}%`);
     }
-    if (watched.get(manifestoTrack)) parallax(skyRidges, manifestoProgress, 1.6, 0.35);
-    if (watched.get(studyTrack)) parallax(duneLayers, studyProgress, 2.4, 0.3);
     requestAnimationFrame(tick);
   })();
 
@@ -349,16 +335,21 @@
     }, { target: el, offset: ['start 88%', 'end 58%'] });
   });
 
-  /* Estudo: Pensar, Expressar e Sustentar acendem em sequência */
+  /* Estudo: a foto se aproxima devagar e as três palavras acendem em sequência */
+  const studyTrack = $('.study-track');
+  scrub('.study-photo img', { scale: [1.22, 1] }, studyTrack, ['start end', 'end end']);
+  inView('.study', () => {
+    animate('.cross', { opacity: [0, 1], rotate: [-90, 0] }, { duration: 1.2, ease, delay: stagger(0.08) });
+    animate('.study-meta, .study-note', { opacity: [0, 1], y: [20, 0] }, { duration: 1, ease, delay: stagger(0.12, { startDelay: 0.3 }) });
+  }, { amount: 0.4 });
   const studyWords = $$('.study-words span');
   scroll((p) => {
-    studyProgress = p;
     const lit = p * (studyWords.length + 0.6);
     studyWords.forEach((word, i) => {
       const v = clamp01((lit - i) / 0.7);
       word.style.opacity = 0.14 + v * 0.86;
       word.style.transform = `translateX(${(1 - v) * -5}vw)`;
-      word.style.color = v > 0 && v < 1 ? 'var(--mist)' : '';
+      word.style.color = v > 0 && v < 1 ? 'var(--azure-light)' : '';
     });
   }, { target: studyTrack, offset: ['start start', 'end end'] });
 
@@ -370,53 +361,21 @@
     animate(el, { opacity: [0, 1], y: [30, 0] }, { duration: 1, ease });
   });
 
-  /* Projetos: trilho horizontal preso na tela (no celular vira lista) */
-  const projectsTrack = $('.projects-track');
-  const rail = $('.rail');
-  const cards = $$('.card');
-  const projectsTitle = $('.projects-title');
-  const arts = $$('.art img');
-
-  scroll((p) => {
-    if (!isDesktop()) {
-      rail.style.transform = projectsTitle.style.transform = '';
-      cards.forEach((c) => { c.style.rotate = ''; });
-      return;
-    }
-    const travel = rail.scrollWidth - innerWidth;
-    rail.style.transform = `translateX(${-travel * p}px)`;
-    projectsTitle.style.transform = `translateX(${-(projectsTitle.scrollWidth - innerWidth) * p}px)`;
-    cards.forEach((card, i) => {
-      const r = card.getBoundingClientRect();
-      const fromCenter = (r.left + r.width / 2 - innerWidth / 2) / innerWidth;
-      card.style.rotate = `${fromCenter * 5}deg`;
-      arts[i].style.transform = `translateX(${Math.max(-6, Math.min(6, fromCenter * -9))}%)`;
-    });
-  }, { target: projectsTrack, offset: ['start start', 'end end'] });
-
-  inView('.projects-title', () => {
-    if (!isDesktop()) animate('.projects-title', { opacity: [0, 1], y: [40, 0] }, { duration: 0.9, ease });
+  /* Projetos: cada case entra desfocado e ganha foco; a foto anda dentro do cartão */
+  inView('.cases-head', () => {
+    animate('.cases-title, .cases-count', { opacity: [0, 1], y: [40, 0] }, { duration: 1, ease, delay: stagger(0.08) });
   });
-  cards.forEach((card) => {
+  $$('.case').forEach((card, i) => {
+    const img = $('.case-art img', card);
+    card.style.opacity = 0;
     inView(card, () => {
-      if (!isDesktop()) animate(card, { opacity: [0, 1], y: [60, 0], scale: [0.94, 1] }, { duration: 0.9, ease });
-    }, { amount: 0.2 });
+      const delay = isDesktop() ? i * 0.12 : 0;
+      animate(card, { opacity: [0, 1], y: [60, 0], clipPath: ['inset(16% 0 0 0 round 18px)', 'inset(0% 0 0 0 round 18px)'] }, { duration: 1.2, ease, delay });
+      animate(img, { filter: ['blur(18px)', 'blur(0px)'] }, { duration: 1.5, ease, delay: delay + 0.1 });
+      animate($$('.case-top, .case-title', card), { opacity: [0, 1], y: [16, 0] }, { duration: 0.9, ease, delay: stagger(0.07, { startDelay: delay + 0.4 }) });
+    }, { amount: 0.25 });
+    scrub(img, { y: ['-5%', '5%'] }, card, ['start end', 'end start']);
   });
-
-  // Inclinação 3D dos cartões seguindo o mouse.
-  if (hasPointer) {
-    cards.forEach((card) => {
-      card.addEventListener('pointermove', (e) => {
-        const r = card.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width - 0.5;
-        const y = (e.clientY - r.top) / r.height - 0.5;
-        animate(card, { transform: `perspective(1200px) rotateY(${x * 8}deg) rotateX(${y * -8}deg)` }, { duration: 0.4, ease: 'easeOut' });
-      });
-      card.addEventListener('pointerleave', () => {
-        animate(card, { transform: 'perspective(1200px) rotateY(0deg) rotateX(0deg)' }, { type: 'spring', stiffness: 160, damping: 14 });
-      });
-    });
-  }
 
   /* Faixa: anda com a rolagem */
   scrub('.marquee-row', { x: ['0%', '-30%'] }, $('.marquee'), ['start end', 'end start']);
@@ -439,7 +398,7 @@
     want.dataset.tone = p > 0.22 ? 'dark' : 'light';
     updateHeaderTone();
   }, { target: wantTrack, offset: ['start start', 'end end'] });
-  scrub('.land-want .ridge', { y: ['30%', '0%'] }, wantTrack, ['20% end', '80% end']);
+  scrub('.want-glow', { y: ['35%', '0%'] }, wantTrack, ['20% end', '85% end']);
   scrub('.want h2 .line > span', { y: ['115%', '0%'] }, wantTrack, ['start 40%', '55% end']);
   scrub('.want p', { opacity: [0, 1], y: [30, 0] }, wantTrack, ['35% end', '75% end']);
   $$('.contact-intro, .form-card').forEach((el, i) => {
@@ -497,6 +456,7 @@
     const cursor = $('.cursor');
     let bx = 0, by = 0, magnet = false;
     addEventListener('pointermove', (e) => {
+      cursor.classList.add('is-on');
       animate(cursor, { x: e.clientX, y: e.clientY }, { duration: 0.18, ease: 'easeOut' });
       const r = btn.getBoundingClientRect();
       const dx = e.clientX - (r.left + r.width / 2 - bx);
