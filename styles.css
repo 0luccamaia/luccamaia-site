@@ -1156,3 +1156,26 @@ html:has(dialog[open]) { overflow: hidden; }
   .bf-card { padding: 22px 18px; }
   .opt span { min-height: 52px; }
 }
+
+/* Contato: uma pergunta só e o convite para o pré-briefing */
+.form-question > label { color: #fff; font: 300 clamp(28px, 2.8vw, 44px)/1.1 var(--sans); letter-spacing: -.04em; }
+.form-question textarea { margin-top: 18px; font-size: 19px; }
+.form-foot { justify-content: flex-end; }
+.form-invite { margin-top: 32px; padding-top: 28px; border-top: 1px solid rgb(255 255 255 / .12); }
+.form-invite p { max-width: 34em; color: #c6d2d8; font-size: clamp(16px, 1.3vw, 19px); line-height: 1.45; }
+.form-invite-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 52px;
+  margin-top: 20px;
+  padding: 0 24px;
+  border: 1px solid rgb(255 255 255 / .3);
+  border-radius: 99px;
+  font-size: 15px;
+  text-decoration: none;
+  transition: background-color .25s, color .25s, border-color .25s;
+}
+.form-invite-link svg { transition: translate .4s var(--ease); }
+.form-invite-link:hover { border-color: #fff; background: #fff; color: var(--ink); }
+.form-invite-link:hover svg { translate: 6px 0; }

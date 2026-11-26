@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=7">
   <script>
     // O menu do celular depende de script; as animações, também de não haver movimento reduzido.
     document.documentElement.classList.add('has-menu');
@@ -336,44 +336,20 @@
           <input type="hidden" name="from_name" value="Site luccamaia.com">
           <input class="form-trap" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
 
+          <div class="field field-full form-question">
+            <label for="f-mensagem">O que te trouxe até aqui?</label>
+            <textarea id="f-mensagem" name="O que te trouxe até aqui" rows="4" required></textarea>
+          </div>
           <div class="field">
             <label for="f-nome">Seu nome <span aria-hidden="true">*</span></label>
             <input id="f-nome" name="Nome" type="text" autocomplete="name" required>
           </div>
           <div class="field">
-            <label for="f-empresa">Empresa ou marca</label>
-            <input id="f-empresa" name="Empresa" type="text" autocomplete="organization">
-          </div>
-          <div class="field">
-            <label for="f-email">E-mail <span aria-hidden="true">*</span></label>
-            <input id="f-email" name="E-mail" type="email" autocomplete="email" required>
-          </div>
-          <div class="field">
-            <label for="f-whatsapp">WhatsApp</label>
-            <input id="f-whatsapp" name="WhatsApp" type="tel" autocomplete="tel" inputmode="tel">
-          </div>
-          <div class="field field-full">
-            <label for="f-link">Instagram ou site da marca</label>
-            <input id="f-link" name="Instagram ou site" type="text" autocapitalize="none">
-          </div>
-
-          <fieldset class="field field-full">
-            <legend>Onde a sua marca mais precisa de movimento?</legend>
-            <div class="chips">
-              <label class="chip"><input type="checkbox" name="Interesse[]" value="Posicionamento"><span>Posicionamento</span></label>
-              <label class="chip"><input type="checkbox" name="Interesse[]" value="Estratégia"><span>Estratégia</span></label>
-              <label class="chip"><input type="checkbox" name="Interesse[]" value="Valor"><span>Valor</span></label>
-              <label class="chip"><input type="checkbox" name="Interesse[]" value="Tribo"><span>Tribo</span></label>
-            </div>
-          </fieldset>
-
-          <div class="field field-full">
-            <label for="f-mensagem">Qual é o maior desafio da sua marca hoje? <span aria-hidden="true">*</span></label>
-            <textarea id="f-mensagem" name="Mensagem" rows="4" required></textarea>
+            <label for="f-whatsapp">WhatsApp <span aria-hidden="true">*</span></label>
+            <input id="f-whatsapp" name="WhatsApp" type="tel" autocomplete="tel" inputmode="tel" required>
           </div>
 
           <div class="form-foot field-full">
-            <p class="form-note">Seus dados são enviados por e-mail e usados apenas para responder ao seu contato.</p>
             <button class="form-submit" type="submit">
               <span class="form-submit-label">Enviar</span>
               <svg viewBox="0 0 64 24" width="28" height="11" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M0 12h61M50 2l11 10-11 10"/></svg>
@@ -385,6 +361,14 @@
         <div class="form-done" tabindex="-1" hidden>
           <h3>Recebido.</h3>
           <p>Obrigado por compartilhar a sua ideia. Em breve eu retorno para conversarmos.</p>
+        </div>
+
+        <div class="form-invite">
+          <p>Se você tem interesse em construir a sua marca comigo, responda o pré-briefing para marcarmos uma reunião, sem compromisso.</p>
+          <a class="form-invite-link" href="briefing.html">
+            Responder o pré-briefing
+            <svg viewBox="0 0 64 24" width="28" height="11" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M0 12h61M50 2l11 10-11 10"/></svg>
+          </a>
         </div>
       </div>
 
