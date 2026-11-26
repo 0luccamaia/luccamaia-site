@@ -2,6 +2,7 @@
   const root = document.documentElement;
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+  const isDesktop = () => matchMedia('(min-width: 801px)').matches;
 
   /* Menu do celular: funciona mesmo sem o Motion e com movimento reduzido */
   const menu = $('#menu');
@@ -24,7 +25,7 @@
   matchMedia('(min-width: 801px)').addEventListener('change', (e) => {
     if (e.matches) setMenu(false, false);
   });
-  $$('a', menu).forEach((link) => {
+  $$('a[href^="#"]', menu).forEach((link) => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       setMenu(false, false);
@@ -34,6 +35,29 @@
         $(link.getAttribute('href')).scrollIntoView({ behavior: instant ? 'auto' : 'smooth' });
       });
     });
+  });
+
+  /* Processo: um painel aberto de cada vez (no celular, dá para fechar todos) */
+  const steps = $$('.step');
+  function openStep(step) {
+    steps.forEach((s) => {
+      const on = s === step;
+      s.classList.toggle('is-open', on);
+      $('.step-toggle', s).setAttribute('aria-expanded', String(on));
+    });
+  }
+  steps.forEach((step) => {
+    const toggle = $('.step-toggle', step);
+    toggle.addEventListener('click', () => {
+      if (!step.classList.contains('is-open')) openStep(step);
+      else if (!isDesktop()) openStep(null);
+    });
+    toggle.addEventListener('pointerenter', (e) => {
+      if (e.pointerType === 'mouse' && isDesktop()) openStep(step);
+    });
+  });
+  matchMedia('(min-width: 801px)').addEventListener('change', (e) => {
+    if (e.matches && !$('.step.is-open')) openStep(steps[0]);
   });
 
   /* Projetos: abrem em tela cheia; o diálogo nativo cuida do foco e da tecla Esc */
@@ -107,8 +131,8 @@
       form.hidden = true;
       formDone.hidden = false;
       formDone.focus({ preventScroll: true });
-      if (window.Motion && root.classList.contains('js')) {
-        window.Motion.animate(formDone, { opacity: [0, 1], y: [24, 0] }, { duration: 0.8, ease: [0.16, 1, 0.3, 1] });
+      if (motionOn()) {
+        window.Motion.animate(formDone, { opacity: [0, 1], y: [24, 0] }, { duration: 0.8, ease: motionEase });
       }
     } catch {
       showFormError();
@@ -128,9 +152,8 @@
 
   const { animate, scroll, inView, stagger } = window.Motion;
   const clamp01 = (v) => Math.min(1, Math.max(0, v));
-  const isDesktop = () => matchMedia('(min-width: 801px)').matches;
   const hasPointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
-  const ease = [0.16, 1, 0.3, 1];
+  const ease = motionEase;
 
   // Cor do cabeçalho conforme o fundo logo abaixo dele.
   const header = $('.site-header');
@@ -142,7 +165,6 @@
       if (r.top <= 50 && r.bottom > 50) tone = el.dataset.tone;
     });
     header.classList.toggle('on-dark', tone === 'dark');
-    header.classList.toggle('on-orange', tone === 'orange');
   }
 
   // Liga uma animação à rolagem de um trecho da página.
@@ -172,9 +194,18 @@
     return $$('.w', el);
   }
 
+  // Mouse suavizado, compartilhado pelas paisagens.
+  let px = 0, py = 0, cx = 0, cy = 0;
+  if (hasPointer) {
+    addEventListener('pointermove', (e) => {
+      px = e.clientX / innerWidth - 0.5;
+      py = e.clientY / innerHeight - 0.5;
+    });
+  }
+
   /* Entrada */
   const intro = $('.intro');
-  const heroPhoto = $('.hero-photo');
+  const heroRidges = $$('.land-hero .ridge');
   async function playIntro() {
     await animate($('img', intro), { scale: [0.4, 1], opacity: [0, 1] }, { duration: 0.6, ease }).finished;
     animate($('img', intro), { rotate: '180deg' }, { duration: 0.6, ease });
@@ -182,47 +213,68 @@
     intro.remove();
   }
   playIntro();
-  animate(heroPhoto, { opacity: [0, 1], scale: [1.14, 1], filter: ['blur(18px)', 'blur(0px)'] }, { duration: 1.7, ease, delay: 0.7 });
-  animate('.hero-title .line > span', { y: ['150%', '0%'] }, { duration: 1.1, ease, delay: stagger(0.1, { startDelay: 1.05 }) });
-  animate('.hero-tag', { opacity: [0, 1], y: [14, 0] }, { duration: 0.9, ease, delay: 1.45 });
+  animate(heroRidges, { y: ['40%', '0%'] }, { duration: 2.2, ease, delay: stagger(0.09, { startDelay: 0.75 }) });
+  animate('.sun', { opacity: [0, 1], scale: [0.6, 1] }, { duration: 2.4, ease, delay: 0.9 });
+  animate('.land-hero .fog', { opacity: [0, 1] }, { duration: 2.5, delay: 1.2 });
+  animate('.hero-title .line > span', { y: ['110%', '0%'] }, { duration: 1.2, ease, delay: stagger(0.12, { startDelay: 1.1 }) });
+  animate('.hero-tag', { opacity: [0, 1], y: [12, 0] }, { duration: 0.9, ease, delay: 1.0 });
+  animate('.hero-sub', { opacity: [0, 1], y: [12, 0] }, { duration: 0.9, ease, delay: 1.45 });
+  animate('.hero-meta', { opacity: [0, 1] }, { duration: 1.2, delay: 1.7 });
   animate('.site-header', { opacity: [0, 1], y: [-12, 0] }, { duration: 0.8, delay: 1.3 });
-  animate('.scroll-btn', { opacity: [0, 1], scale: [0.5, 1] }, { type: 'spring', stiffness: 220, damping: 16, delay: 1.5 });
+  animate('.scroll-btn', { opacity: [0, 1], scale: [0.5, 1] }, { type: 'spring', stiffness: 220, damping: 16, delay: 1.6 });
 
-  /* Hero: a palavra sobe atrás da pessoa conforme a rolagem */
+  /* Capa: a moldura se abre, as montanhas ganham profundidade e a palavra sobe atrás delas */
   const heroTrack = $('.hero-track');
-  const heroOffset = ['start start', 'end end'];
-  scrub('.hero-word', { y: ['100%', '0%'] }, heroTrack, heroOffset);
-  scrub('.hero-copy', { y: ['0vh', '-26vh'], opacity: [1, 0] }, heroTrack, ['start start', '55% end']);
+  const heroFrame = $('.hero-frame');
+  const frameInset = isDesktop() ? 'inset(10px round 28px)' : 'inset(8px round 20px)';
+  scrub(heroFrame, { clipPath: [frameInset, 'inset(0px round 0px)'] }, heroTrack, ['start start', '45% end']);
+  scrub('.hero-word', { y: ['100%', '-12%'] }, heroTrack, ['start start', 'end end']);
+  scrub('.hero-copy', { y: ['0vh', '-16vh'], opacity: [1, 0] }, heroTrack, ['start start', '50% end']);
+  scrub('.hero-meta', { opacity: [1, 0] }, heroTrack, ['start start', '30% end']);
 
-  // Foto: combina rolagem e mouse sem um sobrescrever o outro.
-  let heroProgress = 0;
-  let px = 0, py = 0, cx = 0, cy = 0;
-  scroll((p) => { heroProgress = p; }, { target: heroTrack, offset: heroOffset });
-  if (hasPointer) {
-    addEventListener('pointermove', (e) => {
-      px = e.clientX / innerWidth - 0.5;
-      py = e.clientY / innerHeight - 0.5;
+  // Paralaxe por profundidade: rolagem e mouse somados sem um sobrescrever o outro.
+  function parallax(layers, progress, scrollDepth, mouseDepth) {
+    layers.forEach((layer) => {
+      const d = Number(layer.dataset.depth);
+      layer.style.translate = `${cx * d * -mouseDepth}vw ${-progress * d * scrollDepth + cy * d * -mouseDepth * 0.5}vh`;
     });
   }
-  const heroImg = $('img', heroPhoto);
-  const heroTitle = $('.hero-copy');
-  (function tick() {
-    cx += (px - cx) * 0.07;
-    cy += (py - cy) * 0.07;
-    const shift = isDesktop() ? -9 : 0;
-    heroImg.style.transform =
-      `translate(${shift * heroProgress + cx * -1.6}vw, ${cy * -1.2}vh) scale(${1.03 + heroProgress * 0.08}) scaleX(-1)`;
-    heroTitle.style.translate = `${cx * 1.4}vw ${cy * 1}vh`;
-    requestAnimationFrame(tick);
-  })();
+  const watched = new Map();
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((en) => watched.set(en.target, en.isIntersecting));
+  });
 
-  /* Porque: um capítulo de cada vez, com o fundo mudando junto */
+  let heroProgress = 0;
+  scroll((p) => { heroProgress = p; }, { target: heroTrack, offset: ['start start', 'end end'] });
+  const sun = $('.sun');
+  io.observe(heroTrack);
+
+  /* Porque: um capítulo de cada vez, com o céu mudando junto */
   const manifesto = $('.manifesto');
+  const manifestoTrack = $('.manifesto-track');
+  const skyRidges = $$('.land-sky .ridge');
   const chapters = $$('.chapter');
   const chapterWords = chapters.map(splitWords);
   const chapterNow = $('.chapter-now');
   const fade = 0.12;
+  // Céu (três tons) e quatro cordilheiras para cada capítulo: manhã, dia, entardecer, noite e o gradiente da marca.
+  // A névoa clara só faz sentido nos céus claros.
+  const fogs = [1, 1, 0.35, 0.12, 0.3];
+  const palettes = [
+    ['#eef3f5', '#dbe7ed', '#c4d8e1', '#b9cfd9', '#94b3c2', '#6890a4', '#2c566b'],
+    ['#e3edf2', '#eef3f5', '#f7f9fa', '#c9d8df', '#a5bfcb', '#7c9fb0', '#41687b'],
+    ['#0b3347', '#1f5d78', '#5f97ae', '#2b6680', '#1a4c63', '#0f3547', '#06202c'],
+    ['#040607', '#0b1419', '#16252d', '#1a2930', '#121d23', '#0b1318', '#05090c'],
+    ['#000000', '#004a6b', '#8cb9cc', '#00638e', '#004a6b', '#002c40', '#000000'],
+  ].map((pal) => pal.map((hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16))));
+  const skyVars = ['--s1', '--s2', '--s3', '--r1', '--r2', '--r3', '--r4'];
+  const mix = (a, b, t) => `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(' ')})`;
+  const smoothstep = (t) => t * t * (3 - 2 * t);
+  let manifestoProgress = 0;
+  io.observe(manifestoTrack);
+
   scroll((p) => {
+    manifestoProgress = p;
     const position = p * chapters.length;
     const current = Math.min(chapters.length - 1, Math.floor(position));
     chapters.forEach((chapter, i) => {
@@ -235,27 +287,52 @@
       chapter.style.transform = `translateY(${(1 - enter) * 40 - leave * 40}px)`;
       const words = chapterWords[i];
       const lit = (local / 0.72) * (words.length + 2);
-      words.forEach((w, j) => { w.style.opacity = 0.16 + clamp01(lit - j) * 0.84; });
+      words.forEach((w, j) => { w.style.opacity = 0.18 + clamp01(lit - j) * 0.82; });
     });
+
+    // O céu passa para o próximo capítulo no último quinto de cada um.
+    const frac = position - current;
+    const next = Math.min(palettes.length - 1, current + 1);
+    const t = smoothstep(clamp01((frac - 0.8) / 0.2));
+    skyVars.forEach((name, i) => manifesto.style.setProperty(name, mix(palettes[current][i], palettes[next][i], t)));
+    manifesto.style.setProperty('--fog', fogs[current] + (fogs[next] - fogs[current]) * t);
+
     manifesto.dataset.tone = chapters[current].dataset.tone;
     updateHeaderTone();
     chapterNow.textContent = String(current + 1).padStart(2, '0');
-  }, { target: $('.manifesto-track'), offset: ['start start', 'end end'] });
+  }, { target: manifestoTrack, offset: ['start start', 'end end'] });
+
+  /* Estudo: as dunas andam devagar */
+  const studyTrack = $('.study-track');
+  const duneLayers = $$('.land-dunes .ridge');
+  let studyProgress = 0;
+  io.observe(studyTrack);
+
+  (function tick() {
+    cx += (px - cx) * 0.06;
+    cy += (py - cy) * 0.06;
+    if (watched.get(heroTrack)) {
+      parallax(heroRidges, heroProgress, 1.8, 0.5);
+      sun.style.translate = `calc(-50% + ${cx * -0.6}vw) calc(40% + ${heroProgress * 14}vh)`;
+    }
+    if (watched.get(manifestoTrack)) parallax(skyRidges, manifestoProgress, 1.6, 0.35);
+    if (watched.get(studyTrack)) parallax(duneLayers, studyProgress, 2.4, 0.3);
+    requestAnimationFrame(tick);
+  })();
 
   /* Sobre: foto gira com a rolagem e os números contam */
-  const bio = $('.bio');
-  scrub('.bio-photo', { rotate: ['-5deg', '3deg'] }, $('.bio-grid'), ['start end', 'end start']);
-  scrub('.bio-photo img', { scale: [1.18, 1] }, $('.bio-grid'), ['start end', 'center center']);
-  $$('.stat').forEach((stat) => {
+  scrub('.bio-photo', { rotate: ['-3deg', '2deg'] }, $('.bio-grid'), ['start end', 'end start']);
+  scrub('.bio-photo img', { scale: [1.16, 1] }, $('.bio-grid'), ['start end', 'center center']);
+  $$('.stat').forEach((stat, i) => {
     const value = $('dd', stat);
     const target = Number(value.dataset.count);
     const suffix = value.dataset.suffix || '';
     if (target) value.textContent = `0${suffix}`;
     inView(stat, () => {
-      animate(stat, { opacity: [0, 1], x: [36, 0] }, { duration: 0.8, ease });
+      animate(stat, { opacity: [0, 1], y: [28, 0] }, { duration: 0.9, ease, delay: (i % 3) * 0.08 });
       if (target) {
         animate(0, target, {
-          duration: 1.4,
+          duration: 1.6,
           ease,
           onUpdate: (v) => { value.textContent = `${Math.round(v)}${suffix}`; },
         });
@@ -275,21 +352,22 @@
   /* Estudo: Pensar, Expressar e Sustentar acendem em sequência */
   const studyWords = $$('.study-words span');
   scroll((p) => {
+    studyProgress = p;
     const lit = p * (studyWords.length + 0.6);
     studyWords.forEach((word, i) => {
       const v = clamp01((lit - i) / 0.7);
-      word.style.opacity = 0.12 + v * 0.88;
+      word.style.opacity = 0.14 + v * 0.86;
       word.style.transform = `translateX(${(1 - v) * -5}vw)`;
-      word.style.color = v > 0 && v < 1 ? 'var(--orange)' : '';
+      word.style.color = v > 0 && v < 1 ? 'var(--mist)' : '';
     });
-  }, { target: $('.study-track'), offset: ['start start', 'end end'] });
+  }, { target: studyTrack, offset: ['start start', 'end end'] });
 
-  /* Processo: cada etapa cobre a anterior, que recua */
-  const steps = $$('.step');
-  steps.forEach((step, i) => {
-    const next = steps[i + 1];
-    if (next) scrub(step, { scale: [1, 0.93] }, next, ['start end', 'start 12%']);
-    scrub($('h3', step), { x: ['6%', '0%'], opacity: [0.25, 1] }, step, ['start 95%', 'start 35%']);
+  /* Processo: os painéis entram em sequência */
+  inView('.steps', () => {
+    animate('.step', { opacity: [0, 1], y: [40, 0] }, { duration: 1, ease, delay: stagger(0.08) });
+  }, { amount: 0.2 });
+  inView('.process-intro', (el) => {
+    animate(el, { opacity: [0, 1], y: [30, 0] }, { duration: 1, ease });
   });
 
   /* Projetos: trilho horizontal preso na tela (no celular vira lista) */
@@ -311,7 +389,7 @@
     cards.forEach((card, i) => {
       const r = card.getBoundingClientRect();
       const fromCenter = (r.left + r.width / 2 - innerWidth / 2) / innerWidth;
-      card.style.rotate = `${fromCenter * 7}deg`;
+      card.style.rotate = `${fromCenter * 5}deg`;
       arts[i].style.transform = `translateX(${Math.max(-6, Math.min(6, fromCenter * -9))}%)`;
     });
   }, { target: projectsTrack, offset: ['start start', 'end end'] });
@@ -332,7 +410,7 @@
         const r = card.getBoundingClientRect();
         const x = (e.clientX - r.left) / r.width - 0.5;
         const y = (e.clientY - r.top) / r.height - 0.5;
-        animate(card, { transform: `perspective(1200px) rotateY(${x * 9}deg) rotateX(${y * -9}deg)` }, { duration: 0.4, ease: 'easeOut' });
+        animate(card, { transform: `perspective(1200px) rotateY(${x * 8}deg) rotateX(${y * -8}deg)` }, { duration: 0.4, ease: 'easeOut' });
       });
       card.addEventListener('pointerleave', () => {
         animate(card, { transform: 'perspective(1200px) rotateY(0deg) rotateX(0deg)' }, { type: 'spring', stiffness: 160, damping: 14 });
@@ -343,25 +421,26 @@
   /* Faixa: anda com a rolagem */
   scrub('.marquee-row', { x: ['0%', '-30%'] }, $('.marquee'), ['start end', 'end start']);
 
-  /* Crença: do improvável à referência */
-  const flowStart = isDesktop() ? [-60, 0, 60] : [-24, 0, 24];
-  $$('.flow-item').forEach((item, i) => {
-    scrub(item, { x: [`${flowStart[i]}%`, '0%'], scale: [0.72, 1], opacity: [0, 1] }, $('.flow'), ['start 95%', 'center 62%']);
-  });
+  /* Crença: do improvável à referência, pela linha do tempo */
+  const flow = $('.flow');
+  scrub('.flow-line i', { scaleX: [0, 1] }, flow, ['start 90%', 'center 55%']);
+  scrub('.flow-item.is-soft', { opacity: [0, 1], x: [-30, 0] }, flow, ['start 95%', 'center 75%']);
+  scrub('.flow-item.is-azure', { opacity: [0, 1], x: [30, 0], scale: [0.9, 1] }, flow, ['start 75%', 'center 55%']);
   $$('.belief-big .line > span').forEach((line, i) => {
-    scrub(line, { y: ['135%', '0%'] }, $('.belief-big'), [`start ${88 - i * 6}%`, `center ${58 - i * 6}%`]);
+    scrub(line, { y: ['120%', '0%'] }, $('.belief-big'), [`start ${88 - i * 6}%`, `center ${58 - i * 6}%`]);
   });
 
-  /* Eu quero: o laranja nasce do botão e toma a tela */
+  /* Eu quero: o gradiente nasce do botão e toma a tela */
   const wantTrack = $('.want-track');
   const want = $('.want');
   const wantFill = $('.want-fill');
   scroll((p) => {
     wantFill.style.clipPath = `circle(${clamp01(p / 0.62) * 150}% at 92% 92%)`;
-    want.dataset.tone = p > 0.25 ? 'orange' : 'light';
+    want.dataset.tone = p > 0.22 ? 'dark' : 'light';
     updateHeaderTone();
   }, { target: wantTrack, offset: ['start start', 'end end'] });
-  scrub('.want h2 .line > span', { y: ['125%', '0%'] }, wantTrack, ['start 40%', '55% end']);
+  scrub('.land-want .ridge', { y: ['30%', '0%'] }, wantTrack, ['20% end', '80% end']);
+  scrub('.want h2 .line > span', { y: ['115%', '0%'] }, wantTrack, ['start 40%', '55% end']);
   scrub('.want p', { opacity: [0, 1], y: [30, 0] }, wantTrack, ['35% end', '75% end']);
   $$('.contact-intro, .form-card').forEach((el, i) => {
     inView(el, () => {
@@ -384,7 +463,7 @@
 
     const active = stops.filter((s) => s.getBoundingClientRect().top <= innerHeight * 0.5).pop();
     root.classList.toggle('at-contact', contact.getBoundingClientRect().top < innerHeight * 0.7);
-    // "Eu quero" abre o formulário, mas também fica ativo durante a transição laranja.
+    // "Eu quero" abre o formulário, mas também fica ativo durante a transição.
     const activeId = active && active.id === 'eu-quero' ? 'contato' : active && active.id;
     links.forEach((a) => {
       if (activeId && a.getAttribute('href') === `#${activeId}`) a.setAttribute('aria-current', 'true');
@@ -412,7 +491,7 @@
     (next || stops[stops.length - 1]).scrollIntoView({ behavior: 'smooth' });
   });
   // A seta já está girada 90° no CSS, então o eixo x dela aponta para baixo.
-  animate(arrow, { x: [0, 5, 0] }, { duration: 1.8, repeat: Infinity, ease: 'easeInOut' });
+  animate(arrow, { x: [0, 4, 0] }, { duration: 1.8, repeat: Infinity, ease: 'easeInOut' });
 
   if (hasPointer) {
     const cursor = $('.cursor');
